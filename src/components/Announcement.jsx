@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const AnnouncementWrapper = styled.div`
 height: 30px;
-  background-color: teal;
+  background-color: pink;
   color: white;
   display: flex;
   align-items: center;
