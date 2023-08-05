@@ -58,6 +58,10 @@ const Bottom = styled.div`
 const Info = styled.div`
   flex: 3;
 `;
+const Message = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const Product = styled.div`
   display: flex;
@@ -161,6 +165,7 @@ const Button = styled.button`
 const Cart = () => {
   const KEY = process.env.REACT_APP_STRIPE_KEY;
   const cart = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.user.currentUser);
   const [stripeToken, setStripeToken] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -203,42 +208,56 @@ const Cart = () => {
             CONTINUE SHOPPING
           </TopButton>
           <TopTexts>
-            <TopText>Shopping Bag(2)</TopText>
-            <TopText>Your Wishlist (0)</TopText>
+            <TopText>Shopping Bag({cart.quantity})</TopText>
+            {/* <TopText>Your Wishlist (0)</TopText> */}
           </TopTexts>
-          <TopButton type="filled">CHECKOUT NOW</TopButton>
+          {!user && (
+            <TopButton
+              onClick={() => {
+                navigate("/login");
+              }}
+              type="filled"
+            >
+              LOGIN TO CHECKOUT
+            </TopButton>
+          )}
         </Top>
         <Bottom>
           <Info>
-            {cart.products.map((product) => (
-              <Product>
-                <ProductDetail>
-                  <Image src={product.img} />
-                  <Details>
-                    <ProductName>
-                      <b>Product:</b> {product.title}
-                    </ProductName>
-                    <ProductId>
-                      <b>ID:</b> {product._id}
-                    </ProductId>
-                    <ProductColor color={product.color} />
-                    <ProductSize>
-                      <b>Size:</b> {product.size}
-                    </ProductSize>
-                  </Details>
-                </ProductDetail>
-                <PriceDetail>
-                  <ProductAmountContainer>
-                    <Add />
-                    <ProductAmount>{product.quantity}</ProductAmount>
-                    <Remove />
-                  </ProductAmountContainer>
-                  <ProductPrice>
-                    Rs {product.price * product.quantity}
-                  </ProductPrice>
-                </PriceDetail>
-              </Product>
-            ))}
+            {cart.products.length === 0 ? (
+              <Message>Your cart is empty!</Message>
+            ) : (
+              cart.products.map((product) => (
+                <Product>
+                  <ProductDetail>
+                    <Image src={product.img} />
+                    <Details>
+                      <ProductName>
+                        <b>Product:</b> {product.title}
+                      </ProductName>
+                      <ProductId>
+                        <b>ID:</b> {product._id}
+                      </ProductId>
+                      <ProductColor color={product.color} />
+                      <ProductSize>
+                        <b>Size:</b> {product.size}
+                      </ProductSize>
+                    </Details>
+                  </ProductDetail>
+                  <PriceDetail>
+                    <ProductAmountContainer>
+                      <Add />
+                      <ProductAmount>{product.quantity}</ProductAmount>
+                      <Remove />
+                    </ProductAmountContainer>
+                    <ProductPrice>
+                      Rs {product.price * product.quantity}
+                    </ProductPrice>
+                  </PriceDetail>
+                </Product>
+              ))
+            )}
+
             <Hr />
           </Info>
           <Summary>
@@ -259,18 +278,20 @@ const Cart = () => {
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>Rs {cart.total}</SummaryItemPrice>
             </SummaryItem>
-            <StripeCheckout
-              name="StyleX"
-              image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFtmCCXQ1CRqhrCgqONuYChTz9lsJL5Ru1brHzqdoFixY_cUOxIAl9n40FCdtWS_zPSFc&usqp=CAU"
-              billingAddress
-              shippingAddress
-              description={`Your total is Rs. ${cart.total}`}
-              amount={cart.total * 100}
-              token={onToken}
-              stripeKey={KEY}
-            >
-              <Button>CHECKOUT NOW</Button>
-            </StripeCheckout>
+            {user && (
+              <StripeCheckout
+                name="StyleX"
+                image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFtmCCXQ1CRqhrCgqONuYChTz9lsJL5Ru1brHzqdoFixY_cUOxIAl9n40FCdtWS_zPSFc&usqp=CAU"
+                billingAddress
+                shippingAddress
+                description={`Your total is Rs. ${cart.total}`}
+                amount={cart.total * 100}
+                token={onToken}
+                stripeKey={KEY}
+              >
+                <Button>CHECKOUT NOW</Button>
+              </StripeCheckout>
+            )}
           </Summary>
         </Bottom>
       </Wrapper>

@@ -4,7 +4,9 @@ import { login } from "../redux/apiCalls";
 import { mobile } from "../responsive";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { userRequest } from "../requestMethods";
+import { toast } from "react-toastify";
+import { loginFailure, loginStart, loginSuccess } from "../redux/userRedux";
+import { publicRequest } from "../requestMethods";
 
 const Container = styled.div`
   width: 100vw;
@@ -48,11 +50,12 @@ const Button = styled.button`
   width: 40%;
   border: none;
   padding: 15px 20px;
-  background-color: pink;
+  background-color: red;
   color: white;
   cursor: pointer;
   margin-bottom: 10px;
   &:disabled {
+    background-color: pink;
     color: green;
     cursor: not-allowed;
   }
@@ -75,21 +78,25 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isFetching, error } = useSelector((state) => state.user);
-
+  const [loading, setLoading] = useState(false);
+  // console.log(isFetching, error);
   const handleClick = async (e) => {
     e.preventDefault();
+    const user = {
+      username: username,
+      password: password,
+    };
+    dispatch(loginStart());
     try {
-      const res = await userRequest.post("/auth/login", {
-        username: username,
-        password: password,
-      });
-      console.log(res);
+      const res = await publicRequest.post("/auth/login", user);
+      dispatch(loginSuccess(res.data));
+      toast.success("Loggin in successfully");
       navigate("/");
     } catch (err) {
+      dispatch(loginFailure());
       console.log(err);
+      toast.error(err.response.data);
     }
-
-    login(dispatch, { username, password });
   };
   return (
     <Container>
@@ -106,9 +113,9 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <Button onClick={handleClick} disabled={isFetching}>
-            LOGIN
+            {isFetching ? "Loading" : "LOGIN"}
           </Button>
-          {error && <Error>Something went wrong...</Error>}
+          {/* {error && <Error>Something went wrong...</Error>} */}
           <Link>DO NOT YOU REMEMBER THE PASSWORD?</Link>
           <Link
             onClick={() => {

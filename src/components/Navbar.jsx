@@ -4,7 +4,9 @@ import { Badge } from "@mui/material";
 import { Search, ShoppingCartOutlined } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { mobile } from "../responsive";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { emptyCart } from "../redux/cartRedux";
+import { logout } from "../redux/userRedux";
 
 const NavContainer = styled.div`
   /* height: 60px; */
@@ -68,9 +70,31 @@ const MenuItem = styled.div`
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
+const Avatar = styled.div`
+  /* padding: 5px; */
+  background-image: url("https://www.w3schools.com/howto/img_avatar.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  border-radius: 100%;
+`;
+const Image = styled.img`
+  width: 100%;
+  height: 30px;
+  border-radius: 100%;
+`;
+
 const Navbar = () => {
   const quantity = useSelector((state) => state.cart.quantity);
+  const user = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    window.localStorage.clear();
+    dispatch(logout());
+    dispatch(emptyCart());
+    console.log("Logged out");
+  };
   return (
     <NavContainer>
       <Wrapper>
@@ -84,29 +108,49 @@ const Navbar = () => {
         <Center>
           <Logo>StyleX</Logo>
         </Center>
-        <Right>
-          <MenuItem
-            onClick={() => {
-              navigate("/register");
-            }}
-          >
-            REGISTER
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              navigate("/login");
-            }}
-          >
-            SIGN IN
-          </MenuItem>
-          <Link to="/cart">
-            <MenuItem>
-              <Badge badgeContent={quantity} color="primary">
-                <ShoppingCartOutlined />
-              </Badge>
+        {!user && (
+          <Right>
+            <MenuItem
+              onClick={() => {
+                navigate("/register");
+              }}
+            >
+              REGISTER
             </MenuItem>
-          </Link>
-        </Right>
+            <MenuItem
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              SIGN IN
+            </MenuItem>
+            <Link to="/cart">
+              <MenuItem>
+                <Badge badgeContent={quantity} color="primary">
+                  <ShoppingCartOutlined />
+                </Badge>
+              </MenuItem>
+            </Link>
+          </Right>
+        )}
+        {user !== null && (
+          <Right>
+            <Avatar>
+              <Image
+                src="https://www.w3schools.com/howto/img_avatar.png"
+                alt="avatar"
+              ></Image>
+            </Avatar>
+            <MenuItem onClick={logoutHandler}>LOGOUT</MenuItem>
+            <Link to="/cart">
+              <MenuItem>
+                <Badge badgeContent={quantity} color="primary">
+                  <ShoppingCartOutlined />
+                </Badge>
+              </MenuItem>
+            </Link>
+          </Right>
+        )}
       </Wrapper>
     </NavContainer>
   );

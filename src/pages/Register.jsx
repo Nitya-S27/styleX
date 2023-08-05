@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import { useState } from "react";
+import { userRequest } from "../requestMethods";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const Container = styled.div`
   width: 100vw;
@@ -49,28 +53,144 @@ const Button = styled.button`
   width: 40%;
   border: none;
   padding: 15px 20px;
-  background-color: pink;
+  background-color: ${(props) => (props.isActive === true ? "red" : "pink")};
+  cursor: ${(props) => (props.isActive === true ? "pointer" : "not-allowed")};
   color: white;
-  cursor: pointer;
 `;
 
 const Register = () => {
+  const [firstName, setFirstname] = useState("");
+  const [lastName, setLastname] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [err, setErr] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleValidation = (event) => {
+    // const passwordInputValue = event.target.value.trim();
+    const passwordInputFieldName = event.target.name;
+    if (
+      passwordInputFieldName === "confirmPassword" ||
+      (passwordInputFieldName === "password" && confirmPassword.length > 0)
+    ) {
+      if (confirmPassword !== password) {
+        setErr("Confirm password does not match");
+      } else {
+        setErr("");
+      }
+    }
+  };
+  const registerHandler = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const user = {
+      username: username,
+      email: email,
+      password: password,
+      isAdmin: false,
+    };
+    try {
+      await userRequest.post("/auth/register", user);
+      toast.success("Registered Successfully!");
+      setLoading(false);
+      navigate("/login");
+    } catch (error) {
+      toast.error(error.response.data);
+      setLoading(false);
+      // console.log(error.response.data);
+    }
+  };
+  const errorCheck = () => {
+    if (
+      username.trim().length === 0 ||
+      firstName.trim().length === 0 ||
+      password.trim().length === 0
+    ) {
+      setErr("All input fields are required.");
+      return true;
+    } else {
+      return false;
+    }
+  };
   return (
     <Container>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
         <Form>
-          <Input placeholder="name" />
-          <Input placeholder="last name" />
-          <Input placeholder="username" />
-          <Input placeholder="email" />
-          <Input placeholder="password" />
-          <Input placeholder="confirm password" />
+          <Input
+            required
+            type="text"
+            value={firstName}
+            placeholder="first name"
+            onChange={(event) => {
+              setFirstname(event.target.value);
+            }}
+          />
+          <Input
+            required
+            type="text"
+            value={lastName}
+            placeholder="last name"
+            onChange={(event) => {
+              setLastname(event.target.value);
+            }}
+          />
+          <Input
+            required
+            type="text"
+            value={username}
+            placeholder="username"
+            onChange={(event) => {
+              setUsername(event.target.value);
+            }}
+          />
+          <Input
+            required
+            type="email"
+            value={email}
+            placeholder="email"
+            onChange={(event) => {
+              setEmail(event.target.value);
+            }}
+          />
+          <Input
+            required
+            type="password"
+            name="password"
+            value={password}
+            placeholder="password"
+            onKeyUp={handleValidation}
+            onChange={(event) => {
+              setPassword(event.target.value);
+            }}
+          />
+          <Input
+            required
+            type="password"
+            name="confirmPassword"
+            value={confirmPassword}
+            placeholder="confirm password"
+            onKeyUp={handleValidation}
+            onChange={(event) => {
+              setConfirmPassword(event.target.value);
+            }}
+          />
+          {err}
           <Agreement>
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
           </Agreement>
-          <Button>CREATE</Button>
+          <Button
+            onClick={registerHandler}
+            isActive={
+              err.trim().length === 0 && errorCheck() === false ? true : false
+            }
+          >
+            {loading ? "Loading" : "CREATE"}
+          </Button>
         </Form>
       </Wrapper>
     </Container>
