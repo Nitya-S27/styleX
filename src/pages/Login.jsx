@@ -4,6 +4,7 @@ import { login } from "../redux/apiCalls";
 import { mobile } from "../responsive";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { userRequest } from "../requestMethods";
 
 const Container = styled.div`
   width: 100vw;
@@ -12,8 +13,7 @@ const Container = styled.div`
       rgba(255, 255, 255, 0.5),
       rgba(255, 255, 255, 0.5)
     ),
-    url("https://wallpaperaccess.com/full/5141127.jpg")
-      center;
+    url("https://wallpaperaccess.com/full/5141127.jpg") center;
   background-size: cover;
   display: flex;
   align-items: center;
@@ -76,8 +76,19 @@ const Login = () => {
   const navigate = useNavigate();
   const { isFetching, error } = useSelector((state) => state.user);
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
+    try {
+      const res = await userRequest.post("/auth/login", {
+        username: username,
+        password: password,
+      });
+      console.log(res);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+
     login(dispatch, { username, password });
   };
   return (
