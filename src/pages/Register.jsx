@@ -8,7 +8,7 @@ const Container = styled.div`
       rgba(255, 255, 255, 0.5),
       rgba(255, 255, 255, 0.5)
     ),
-    url("https://c1.wallpaperflare.com/preview/259/824/859/indian-traditional-colorful-fashion-culture.jpgsign")
+    url("https://c1.wallpaperflare.com/preview/259/824/859/indian-traditional-colorful-fashion-culture.jpg")
       center;
   background-size: cover;
   display: flex;
