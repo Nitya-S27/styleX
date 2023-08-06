@@ -53,6 +53,7 @@ const Center = styled.div`
 
 const Logo = styled.h1`
   font-weight: bold;
+  cursor: pointer;
   ${mobile({ fontSize: "24px" })}
 `;
 const Right = styled.div`
@@ -106,7 +107,13 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-          <Logo>StyleX</Logo>
+          <Logo
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            StyleX
+          </Logo>
         </Center>
         {!user && (
           <Right>

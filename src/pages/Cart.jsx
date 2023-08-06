@@ -256,9 +256,9 @@ const Cart = () => {
                   </ProductDetail>
                   <PriceDetail>
                     <ProductAmountContainer>
-                      <Add />
-                      <ProductAmount>{product.quantity}</ProductAmount>
-                      <Remove />
+                      {/* <Add /> */}
+                      <ProductAmount>Qty: {product.quantity}</ProductAmount>
+                      {/* <Remove /> */}
                     </ProductAmountContainer>
                     <ProductPrice>
                       Rs {product.details.price * product.quantity}

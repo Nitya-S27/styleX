@@ -46,7 +46,7 @@ const Input = styled.input`
 
 const Agreement = styled.span`
   font-size: 12px;
-  margin: 20px 0px;
+  margin: 20px 0px 10px;
 `;
 
 const Button = styled.button`
@@ -58,11 +58,12 @@ const Button = styled.button`
   color: white;
 `;
 
-const Link = styled.a`
+const Link = styled.div`
   margin: 5px 0px;
   font-size: 12px;
   text-decoration: underline;
   cursor: pointer;
+  width: 100%;
 `;
 
 const Register = () => {
@@ -185,7 +186,7 @@ const Register = () => {
             }}
           />
           {err}
-        
+
           <Agreement>
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
@@ -195,7 +196,7 @@ const Register = () => {
               navigate("/login");
             }}
           >
-            EXISTING USER?
+            EXISTING USER? LOGIN!
           </Link>
           <Button
             onClick={registerHandler}
