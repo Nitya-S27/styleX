@@ -58,6 +58,13 @@ const Button = styled.button`
   color: white;
 `;
 
+const Link = styled.a`
+  margin: 5px 0px;
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+`;
+
 const Register = () => {
   const [firstName, setFirstname] = useState("");
   const [lastName, setLastname] = useState("");
@@ -178,6 +185,13 @@ const Register = () => {
             }}
           />
           {err}
+          <Link
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            EXISTING USER?
+          </Link>
           <Agreement>
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
@@ -188,7 +202,7 @@ const Register = () => {
               err.trim().length === 0 && errorCheck() === false ? true : false
             }
           >
-            {loading ? "Loading" : "CREATE"}
+            {loading ? "Loading..." : "CREATE"}
           </Button>
         </Form>
       </Wrapper>
