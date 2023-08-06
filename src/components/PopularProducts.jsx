@@ -11,12 +11,20 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
+const LoadingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const PopularProducts = ({ cat, filters, sort }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getProducts = async () => {
+      setLoading(true);
       try {
         const res = await axios.get(
           cat
@@ -24,7 +32,10 @@ const PopularProducts = ({ cat, filters, sort }) => {
             : "https://server-f3pq.onrender.com/api/products"
         );
         setProducts(res.data);
-      } catch (err) {}
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+      }
     };
     getProducts();
   }, [cat]);
@@ -56,7 +67,9 @@ const PopularProducts = ({ cat, filters, sort }) => {
     }
   }, [sort]);
 
-  return (
+  return loading ? (
+    <LoadingWrapper>Loading...</LoadingWrapper>
+  ) : (
     <Container>
       {cat
         ? filteredProducts.map((item) => <Product item={item} key={item.id} />)

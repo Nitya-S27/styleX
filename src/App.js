@@ -19,7 +19,11 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element=<Home /> />
+        <Route
+          exact
+          path="/"
+          element={user ? <Home /> : <Navigate to="/login" />}
+        />
         <Route path="/products/:category" element=<ProductList /> />
         <Route path="/product/:id" element=<Product /> />
         <Route path="/cart" element=<Cart /> />

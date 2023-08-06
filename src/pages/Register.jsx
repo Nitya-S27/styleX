@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { useState } from "react";
-import { userRequest } from "../requestMethods";
+import { publicRequest } from "../requestMethods";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
@@ -93,14 +93,13 @@ const Register = () => {
       isAdmin: false,
     };
     try {
-      await userRequest.post("/auth/register", user);
+      await publicRequest.post("/auth/register", user);
       toast.success("Registered Successfully!");
       setLoading(false);
       navigate("/login");
     } catch (error) {
       toast.error(error.response.data);
       setLoading(false);
-      // console.log(error.response.data);
     }
   };
   const errorCheck = () => {

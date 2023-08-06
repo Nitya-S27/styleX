@@ -9,23 +9,26 @@ const FooterWrapper = styled.div`
   flex-direction: column;
 `;
 
-
 const Desc = styled.div`
   font-size: 20px;
   font-weight: 300;
 `;
-
 
 const Footer = () => {
   return (
     <FooterWrapper>
       <Desc>
         Made With ❤️ by{" "}
-        <a href="https://nitya-singh.netlify.app" target="_blank" rel="noreferrer noopener">Nitya Singh</a>{" "}
+        <a
+          href="https://nitya-singh.netlify.app"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          Nitya Singh
+        </a>{" "}
       </Desc>
     </FooterWrapper>
   );
 };
 
 export default Footer;
-

@@ -48,6 +48,8 @@ const Circle = styled.div`
 const PopularProductImage = styled.img`
   height: 100%;
   z-index: 2;
+  width: 50%;
+  object-fit: cover;
 `;
 
 const Icon = styled.div`
