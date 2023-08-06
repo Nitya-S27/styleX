@@ -185,6 +185,11 @@ const Register = () => {
             }}
           />
           {err}
+        
+          <Agreement>
+            By creating an account, I consent to the processing of my personal
+            data in accordance with the <b>PRIVACY POLICY</b>
+          </Agreement>
           <Link
             onClick={() => {
               navigate("/login");
@@ -192,10 +197,6 @@ const Register = () => {
           >
             EXISTING USER?
           </Link>
-          <Agreement>
-            By creating an account, I consent to the processing of my personal
-            data in accordance with the <b>PRIVACY POLICY</b>
-          </Agreement>
           <Button
             onClick={registerHandler}
             isActive={

@@ -9,7 +9,6 @@ import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useNavigate } from "react-router";
-import { fetchCartData } from "../redux/apiCalls";
 
 const Container = styled.div``;
 
@@ -235,10 +234,10 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            {cart.cartProducts.length === 0 ? (
+            {cart?.cartProducts.length === 0 ? (
               <Message>Your cart is empty!</Message>
             ) : (
-              cart.cartProducts.map((product) => (
+              cart?.cartProducts.map((product) => (
                 <Product>
                   <ProductDetail>
                     <Image src={product.details.img} />
