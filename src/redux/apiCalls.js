@@ -33,13 +33,3 @@ export const fetchCartData = async (dispatch, user) => {
   }
 };
 
-export const updateCart = async (dispatch, user) => {
-  try {
-    const res = await userRequest.put(`/cart/${user._id}`, {
-      userID: user._id,
-      username: user.username,
-      products: [],
-    });
-    console.log(res);
-  } catch (err) {}
-};

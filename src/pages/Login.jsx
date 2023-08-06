@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { login } from "../redux/apiCalls";
 import { mobile } from "../responsive";
@@ -78,8 +78,6 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isFetching, error } = useSelector((state) => state.user);
-  const [loading, setLoading] = useState(false);
-  // console.log(isFetching, error);
   const handleClick = async (e) => {
     e.preventDefault();
     const user = {
@@ -90,14 +88,13 @@ const Login = () => {
     try {
       const res = await publicRequest.post("/auth/login", user);
       dispatch(loginSuccess(res.data));
-      toast.success("Loggin in successfully");
-      navigate("/");
     } catch (err) {
       dispatch(loginFailure());
       console.log(err);
       toast.error(err.response.data);
     }
   };
+
   return (
     <Container>
       <Wrapper>

@@ -9,14 +9,16 @@ import { fetchCartData } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 
 const Home = () => {
+  // console.log("hii");
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.currentUser);
-
+  const user = useSelector((store) => store.user.currentUser);
+  console.log(user);
   useEffect(() => {
-    if (user) {
-      fetchCartData(dispatch, user);
-    }
-  }, []);
+    const fetchCartDataHandler = async () => {
+      await fetchCartData(dispatch, user);
+    };
+    fetchCartDataHandler();
+  }, [user]);
 
   return (
     <div>
