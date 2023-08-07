@@ -16,8 +16,17 @@ export const login = async (dispatch, user) => {
 
 export const addToCart = async (dispatch, productID, quantity, color, size) => {
   try {
+    const user = JSON.parse(localStorage.getItem("persist:root"))?.user;
+    const currentUser = user && JSON.parse(user).currentUser;
+    const token = currentUser?.accessToken;
+    const config = {
+      headers: {
+        token: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
     const data = { productID, quantity, color, size };
-    const res = await userRequest.post("/cart/add", data);
+    const res = await userRequest.post("/cart/add", data, config);
     console.log(res);
   } catch (error) {
     console.log(error);
