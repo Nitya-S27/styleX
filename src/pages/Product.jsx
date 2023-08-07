@@ -178,7 +178,8 @@ const Product = () => {
   const handleClick = async () => {
     try {
       await addToCart(dispatch, product._id, quantity, color, size);
-      await fetchCartData(dispatch, user.currentUser);
+      // await fetchCartData(dispatch, user.currentUser);
+      await fetchCartData(dispatch);
     } catch (error) {
       console.log(error);
     }

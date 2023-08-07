@@ -1,6 +1,7 @@
 import { loginFailure, loginStart, loginSuccess } from "./userRedux";
 import { publicRequest, userRequest } from "../requestMethods";
 import { populateCart } from "./cartRedux";
+import axios from "axios";
 
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
@@ -23,13 +24,20 @@ export const addToCart = async (dispatch, productID, quantity, color, size) => {
   }
 };
 
-export const fetchCartData = async (dispatch, user) => {
+export const fetchCartData = async (dispatch) => {
   try {
-    const res = await userRequest.get(`/cart/find/${user._id}`);
+    const user = JSON.parse(localStorage.getItem("persist:root"))?.user;
+    const currentUser = user && JSON.parse(user).currentUser;
+    const token = currentUser?.accessToken;
+    const config = {
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    };
+    const res = await userRequest.get(`/cart/find/${currentUser._id}`, config);
     console.log(res.data);
     dispatch(populateCart(res.data));
   } catch (err) {
     console.log(err);
   }
 };
-
