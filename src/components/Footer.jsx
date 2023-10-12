@@ -17,7 +17,7 @@ const Desc = styled.div`
 const Footer = () => {
   return (
     <FooterWrapper>
-      <Desc>
+      {/* <Desc>
         Made With ❤️ by{" "}
         <a
           href="https://nitya-singh.netlify.app"
@@ -26,7 +26,7 @@ const Footer = () => {
         >
           Nitya Singh
         </a>{" "}
-      </Desc>
+      </Desc> */}
     </FooterWrapper>
   );
 };

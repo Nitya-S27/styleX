@@ -90,7 +90,7 @@ const Login = () => {
       dispatch(loginSuccess(res.data));
     } catch (err) {
       dispatch(loginFailure());
-      console.log(err);
+      // console.log(err);
       toast.error(err.response.data);
     }
   };

@@ -94,7 +94,7 @@ const Navbar = () => {
     window.localStorage.clear();
     dispatch(logout());
     dispatch(emptyCart());
-    console.log("Logged out");
+    // console.log("Logged out");
   };
   return (
     <NavContainer>

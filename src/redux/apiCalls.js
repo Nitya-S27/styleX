@@ -7,7 +7,7 @@ export const login = async (dispatch, user) => {
   dispatch(loginStart());
   try {
     const res = await publicRequest.post("/auth/login", user);
-    console.log(res);
+    // console.log(res);
     dispatch(loginSuccess(res.data));
   } catch (err) {
     dispatch(loginFailure());
@@ -27,7 +27,7 @@ export const addToCart = async (dispatch, productID, quantity, color, size) => {
     };
     const data = { productID, quantity, color, size };
     const res = await userRequest.post("/cart/add", data, config);
-    console.log(res);
+    // console.log(res);
   } catch (error) {
     console.log(error);
   }
@@ -44,7 +44,7 @@ export const fetchCartData = async (dispatch) => {
       },
     };
     const res = await userRequest.get(`/cart/find/${currentUser._id}`, config);
-    console.log(res.data);
+    // console.log(res.data);
     dispatch(populateCart(res.data));
   } catch (err) {
     console.log(err);
